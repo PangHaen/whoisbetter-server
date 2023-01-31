@@ -9,7 +9,7 @@ async def get_userinfo(params):
 
 
 async def get_match_list(params):
-    match_list = await users.get_match_by_access_id(params['accessid'], 40, 0, 100)
+    match_list = await users.get_match_by_access_id(params['accessId'], 40, 0, 100)
     logging.info(f'match_list : {match_list}')
     return match_list
 

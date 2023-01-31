@@ -22,11 +22,11 @@ class RelativeRecord(SelfRecord):
 @router.post('/search/relative')
 async def search_two_user(relative_record: RelativeRecord):
     user_self = await service.get_userinfo(relative_record.userName)
-    # opponent_user = service.get_userinfo(relative_record.opponentUserName)
+    opponent_user = await service.get_userinfo(relative_record.opponentUserName)
 
-    # user_match_list = await service.get_match_list(user_self)
-    # opponent_match_list = await service.get_match_list(opponent_user)
+    user_match_list = await service.get_match_list(user_self)
+    opponent_match_list = await service.get_match_list(opponent_user)
 
-    # result = service.get_same_match(user_match_list, opponent_match_list)
+    result = service.get_same_match(user_match_list, opponent_match_list)
 
-    return {"user" : user_self, "opponent": opponent_user}
+    return {"result": result}

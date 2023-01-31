@@ -7,6 +7,6 @@ async def get_userinfo_by_username(username):
 
 
 async def get_match_by_access_id(access_id, match_type, offset, limit):
-    match_list = await request_api('/users',
-                                   {'accessid': access_id, 'matchtype': match_type, 'offset': offset, 'limit': limit})
+    match_list = await request_api(f'/users/{access_id}/matches',
+                                   {'matchtype': match_type, 'offset': offset, 'limit': limit})
     return match_list
