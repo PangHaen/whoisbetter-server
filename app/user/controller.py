@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from app.user import service
+from app.user.service import application
 
 router = APIRouter(prefix="/api/user")
 
@@ -18,17 +18,20 @@ class RelativeRecord(SelfRecord):
 # async def search_user(self_record: SelfRecord):
 #     return await service.search_userinfo(self_record)
 
-
+# TODO : str인건 맞는데 막 이상한 공격 들어오는건 알 수 없으니까 여기서 한 번 걸러 준다~ (입력 데이터 유효성 검증)
 @router.post('/search/relative')
 async def search_two_user(relative_record: RelativeRecord):
-    # user_self = await service.get_userinfo(relative_record.userName)
-    # opponent_user = await service.get_userinfo(relative_record.opponentUserName)
-    #
-    # user_match_list = await service.get_match_list(user_self)
-    # opponent_match_list = await service.get_match_list(opponent_user)
-    #
-    # result = service.get_same_match(user_match_list, opponent_match_list)
+    user = relative_record.userName
+    opponent = relative_record.opponentUserName
 
-    # return {"result": result}
-    # TODO : str인건 맞는데 막 이상한 공격 들어오는건 알 수 없으니까 여기서 한 번 걸러 준다~ (입력 데이터 유효성 검증)
-    # 다 통과 되면~ service.application으로 보내 준다.
+    try:
+        user_matches_detail_list = await application.get_user_match_list_detail(
+            {'userName': user, 'opponentUserName': opponent})
+        if type(user_matches_detail_list) == 'string':
+            raise Exception(user_matches_detail_list)
+
+        return {'result': user_matches_detail_list}
+    except Exception as e:
+        return e
+
+
